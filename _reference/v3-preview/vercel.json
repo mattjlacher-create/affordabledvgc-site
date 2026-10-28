@@ -1,0 +1,48 @@
+{
+  "rewrites": [
+    {
+      "source": "/dryer-vent-services",
+      "destination": "/dryer-vent-services/index.html"
+    },
+    {
+      "source": "/dryer-vent-products",
+      "destination": "/dryer-vent-products/index.html"
+    },
+    {
+      "source": "/gutter-cleaning",
+      "destination": "/gutter-cleaning/index.html"
+    },
+    {
+      "source": "/gutter-products",
+      "destination": "/gutter-products/index.html"
+    },
+    {
+      "source": "/service-areas",
+      "destination": "/service-areas/index.html"
+    },
+    {
+      "source": "/gallery",
+      "destination": "/gallery/index.html"
+    },
+    {
+      "source": "/reviews",
+      "destination": "/reviews/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/frequently-asked-questions",
+      "destination": "/frequently-asked-questions/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/request-callback-form",
+      "destination": "/request-callback-form/index.html"
+    }
+  ]
+}
