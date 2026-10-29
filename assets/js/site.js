@@ -46,6 +46,71 @@
     update();
   });
 
+  /* ---------- Town links prefill the quote form ---------- */
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("[data-town]");
+    if (!link) return;
+    var field = document.querySelector("#quote input[name='town_zip']");
+    if (field) field.value = link.getAttribute("data-town");
+  });
+
+  /* ---------- Gallery: filters + lightbox ---------- */
+  document.querySelectorAll("[data-gallery]").forEach(function (gallery) {
+    var items = Array.prototype.slice.call(gallery.querySelectorAll("[data-categories]"));
+    var buttons = gallery.querySelectorAll("[data-filter]");
+    var count = gallery.querySelector("[data-gallery-count]");
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var f = btn.getAttribute("data-filter");
+        buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+        var shown = 0;
+        items.forEach(function (li) {
+          var match = f === "all" || (" " + li.getAttribute("data-categories") + " ").indexOf(" " + f + " ") !== -1;
+          li.hidden = !match;
+          if (match) shown++;
+        });
+        if (count) count.textContent = shown + (shown === 1 ? " photo" : " photos");
+      });
+    });
+
+    var dialog = gallery.querySelector("dialog");
+    if (!dialog || typeof dialog.showModal !== "function") return;
+    var img = document.createElement("img");
+    dialog.querySelector("figure").prepend(img);
+    var cap = dialog.querySelector("figcaption");
+    var current = 0;
+    var visible = function () { return items.filter(function (li) { return !li.hidden; }); };
+    var show = function (li) {
+      var btn = li.querySelector("[data-full]");
+      img.src = btn.getAttribute("data-full");
+      img.alt = btn.querySelector("img").alt;
+      cap.textContent = btn.getAttribute("data-caption");
+      current = visible().indexOf(li);
+    };
+    var step = function (d) {
+      var list = visible();
+      if (!list.length) return;
+      show(list[(current + d + list.length) % list.length]);
+    };
+    items.forEach(function (li) {
+      var btn = li.querySelector("[data-full]");
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        show(li);
+        dialog.showModal();
+      });
+    });
+    dialog.querySelector(".lightbox-close").addEventListener("click", function () { dialog.close(); });
+    dialog.querySelector(".lightbox-prev").addEventListener("click", function () { step(-1); });
+    dialog.querySelector(".lightbox-next").addEventListener("click", function () { step(1); });
+    dialog.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
+    });
+    dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+  });
+
   /* ---------- Lead form ---------- */
   document.querySelectorAll("[data-lead-form]").forEach(function (form) {
     var status = form.querySelector(".form-status");
